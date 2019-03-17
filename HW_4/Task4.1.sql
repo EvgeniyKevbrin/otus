@@ -5,6 +5,26 @@
 	FROM   [Application].[People] p
 	WHERE  IsSalesperson = 1
 )
-SELECT DISTINCT FullName
-FROM   SalesPersons sp
-	   INNER JOIN [Sales].[Orders] o ON o.SalespersonPersonID = sp.PersonID
+SELECT * 
+FROM   [Sales].[Invoices] i 
+	   LEFT JOIN [Sales].[Orders] o ON o.OrderID = i.OrderID
+WHERE  i.OrderID IS NULL
+
+-- NOT IN
+
+SELECT *
+FROM   [Sales].[Orders]
+WHERE  SalespersonPersonID NOT IN (	SELECT p.PersonID
+									FROM   [Application].[People] p
+									WHERE  IsSalesperson = 1)
+
+-- NOT EXISTS 
+
+SELECT *
+FROM   [Sales].[Orders] o
+WHERE  NOT EXISTS  (	SELECT p.PersonID
+						FROM   [Application].[People] p
+						WHERE  IsSalesperson = 1 
+							   AND p.PersonID = o.SalespersonPersonID  )
+
+
