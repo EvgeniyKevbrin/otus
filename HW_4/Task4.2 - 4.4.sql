@@ -57,7 +57,6 @@ SELECT city.CityID
 	  ,p.FullName
 FROM   [Sales].[Orders] o
 		INNER JOIN [Sales].[Customers] c ON c.CustomerID = o.CustomerID
-		INNER JOIN [Application].[People] p ON p.PersonID = o.SalespersonPersonID
+		INNER JOIN [Application].[People] p ON p.PersonID = o.PickedByPersonID
 		INNER JOIN [Application].[Cities] city ON city.CityID = c.DeliveryCityID
 		INNER JOIN UnitPrice up                   ON up.OrderID = o.OrderID
-

@@ -1,6 +1,6 @@
 ﻿set statistics time on
-/*Запрос выводит  InvoiceID, InvoiceDate, сотрудников которые являются продавцами,
-  сумму продаж по InvoiceID, сумму продаж для тех OrderID которые равны в Sales.OrderLines
+/*Запрос выводит  сумму продаж по счетам, дату выставления счета, сотрудников которые являются продавцами,
+  сумму продаж по каждому счету, сумму продаж для тех заказов которые равны для заказов Sales.OrderLines
   и Sales.Orders */
 SELECT Invoices.InvoiceID
       ,Invoices.InvoiceDate
