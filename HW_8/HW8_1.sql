@@ -17,28 +17,28 @@
 
 SELECT InvoiceMonthYear
       ,[Gasport, NY]
-	  ,[Jessie, ND]
-	  ,[Medicine Lodge, KS]
-	  ,[Peeples Valley, AZ]
-	  ,[Sylvanite, MT]
+      ,[Jessie, ND]
+      ,[Medicine Lodge, KS]
+      ,[Peeples Valley, AZ]
+      ,[Sylvanite, MT]
 FROM (
-			SELECT ci.CustomerName
-                  ,ci.InvoiceMonthYear
-			FROM   [Sales].[Customers] c
-					INNER JOIN [Sales].[Invoices] i ON  i.CustomerID = c.CustomerID
-					CROSS APPLY
-					(
-						SELECT SUBSTRING(c.CustomerName, CHARINDEX('(', c.CustomerName) + 1, CHARINDEX(')', c.CustomerName) - CHARINDEX('(', c.CustomerName) -1 ) AS CustomerName
-							  ,CONVERT(nvarchar, DATEADD(mm, DATEDIFF(mm, 0, i.InvoiceDate) , 0), 104) AS InvoiceMonthYear
-						WHERE  c.CustomerID IN (2,3,4,5,6)
-					) AS ci
-					                                     ) AS tbl
+      SELECT ci.CustomerName
+            ,ci.InvoiceMonthYear
+      FROM   [Sales].[Customers] c
+             INNER JOIN [Sales].[Invoices] i ON  i.CustomerID = c.CustomerID
+             CROSS APPLY
+             (
+                 SELECT SUBSTRING(c.CustomerName, CHARINDEX('(', c.CustomerName) + 1, CHARINDEX(')', c.CustomerName) - CHARINDEX('(', c.CustomerName) -1 ) AS CustomerName
+                       ,CONVERT(nvarchar, DATEADD(mm, DATEDIFF(mm, 0, i.InvoiceDate) , 0), 104)  AS InvoiceMonthYear
+                 WHERE  c.CustomerID BETWEEN 2 AND 6
+             ) AS ci
+     ) AS tbl
 PIVOT 
-		(
-			COUNT (CustomerName) FOR CustomerName IN ( [Gasport, NY]
-													  ,[Jessie, ND]
-													  ,[Medicine Lodge, KS]
-													  ,[Peeples Valley, AZ]
-													  ,[Sylvanite, MT])
-		) piv
+(
+      COUNT (CustomerName) FOR CustomerName IN ( [Gasport, NY]
+                                                ,[Jessie, ND]
+                                                ,[Medicine Lodge, KS]
+                                                ,[Peeples Valley, AZ]
+                                                ,[Sylvanite, MT])
+) piv
 ORDER BY CONVERT(DATE, InvoiceMonthYear)
